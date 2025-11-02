@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 app.use(express.json());
 
-const VERIFY_TOKEN = "my_token_123"; // 👈 Choose a token (any word or number, but remember it)
+const VERIFY_TOKEN = "mytoken123"; 
 
 app.get("/webhook", (req, res) => {
   const mode = req.query["hub.mode"];
