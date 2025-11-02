@@ -2,18 +2,24 @@ const express = require("express");
 const app = express();
 app.use(express.json());
 
-const VERIFY_TOKEN = "my_secrit_token";
+const VERIFY_TOKEN = "my_token_123"; // 👈 Choose a token (any word or number, but remember it)
 
 app.get("/webhook", (req, res) => {
   const mode = req.query["hub.mode"];
   const token = req.query["hub.verify_token"];
   const challenge = req.query["hub.challenge"];
-  if (mode && token === VERIFY_TOKEN) res.status(200).send(challenge);
-  else res.sendStatus(403);
+
+  if (mode === "subscribe" && token === VERIFY_TOKEN) {
+    console.log("Webhook verified!");
+    res.status(200).send(challenge);
+  } else {
+    console.error("Verification failed.");
+    res.sendStatus(403);
+  }
 });
 
 app.post("/webhook", (req, res) => {
-  console.log("Received:", JSON.stringify(req.body, null, 2));
+  console.log("Webhook received:", JSON.stringify(req.body, null, 2));
   res.sendStatus(200);
 });
 
